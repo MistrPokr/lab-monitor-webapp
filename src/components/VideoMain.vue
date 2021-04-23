@@ -1,0 +1,80 @@
+<template>
+  <div class="row mt-4">
+    <div class="col ml-4">
+      <b-card>
+        <b-form>
+          <b-form-group id="" label="" label-for="">
+            <b-form-textarea
+                id="textarea"
+                v-model="messageText"
+                placeholder="Enter something..."
+                rows="3"
+                max-rows="6"
+            >
+            </b-form-textarea>
+            <b-form-radio-group
+                id="radio-group"
+                name="radio-options"
+                :options="radioOptions"
+            ></b-form-radio-group>
+          </b-form-group>
+        </b-form>
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </b-card>
+      <b-card>
+        <p>Current Angle:
+          <span class="badge badge-success">4</span>
+        </p>
+        <b-button-group size="sm">
+          <b-button>Rotate Left</b-button>
+          <b-button variant="primary"> Reset</b-button>
+          <b-button>Rotate Right</b-button>
+        </b-button-group>
+      </b-card>
+    </div>
+    <div class="col-8 mr-4">
+      <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
+    </div>
+  </div>
+</template>
+
+<script>
+import VideoPlayer from "@/components/VideoPlayer";
+
+export default {
+  name: "VideoMain",
+  components: {
+    VideoPlayer
+  },
+  data() {
+    return {
+      messageText: null,
+      radioOptions: [
+        {text: 'Male Voice', value: 'male1'},
+        {text: 'Female Voice', value: 'female1'},
+      ],
+      videoOptions: {
+        // autoplay: 'muted',
+        controls: true,
+        sources: [{
+          src: "http://vjs.zencdn.net/v/oceans.mp4",
+          type: "video/mp4",
+          // src: "http://192.168.0.138:8001/live/py/index.mpd",
+          // type: "application/dash+xml",
+          // src: "http://192.168.0.138:8001/live/py/index.m3u8",
+          // type: "application/x-mpegURL",
+        }],
+        fill: true,
+        responsive: true,
+        aspectRatio: '16:9',
+      }
+    }
+  },
+
+}
+</script>
+
+<style scoped>
+
+</style>
