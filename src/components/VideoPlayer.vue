@@ -28,8 +28,11 @@ export default {
         this.options,
         function onPlayerReady() {
           console.log('onPlayerReady', this);
-        }
+        },
     )
+
+    // Auto plays on load
+    // this.player.play();
   },
   beforeDestroy() {
     if (this.player) {
@@ -40,5 +43,5 @@ export default {
 </script>
 
 <style scoped>
-  @import "~video.js/dist/video-js.min.css";
+@import "~video.js/dist/video-js.min.css";
 </style>
