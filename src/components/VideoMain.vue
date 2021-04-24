@@ -32,6 +32,20 @@
           <b-button>Rotate Right</b-button>
         </b-button-group>
       </b-card>
+      <b-card>
+        <div>
+          LIVE
+        </div>
+        <b-button-group size="sm">
+          <!--          TODO Whole card changes color on stream status change; e.g. Red on live stream. -->
+          <b-button>
+            Start Stream
+          </b-button>
+          <b-button variant="danger">
+            Stop Stream
+          </b-button>
+        </b-button-group>
+      </b-card>
     </div>
     <div class="col-8 mr-4">
       <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
@@ -76,5 +90,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
