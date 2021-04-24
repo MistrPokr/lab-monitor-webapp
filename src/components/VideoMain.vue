@@ -38,13 +38,16 @@
         </div>
         <b-button-group size="sm">
           <!--          TODO Whole card changes color on stream status change; e.g. Red on live stream. -->
-          <b-button>
+          <b-button @click="startStream">
             Start Stream
           </b-button>
-          <b-button variant="danger">
+          <b-button @click="stopStream" variant="danger">
             Stop Stream
           </b-button>
         </b-button-group>
+        <div>
+          <b-button @click="reloadPlayer" variant="primary" size="sm">Reload Player</b-button>
+        </div>
       </b-card>
     </div>
     <div class="col-8 mr-4">
@@ -55,6 +58,7 @@
 
 <script>
 import VideoPlayer from "@/components/VideoPlayer";
+import axios from "axios";
 
 export default {
   name: "VideoMain",
@@ -72,12 +76,12 @@ export default {
         // autoplay: 'muted',
         controls: true,
         sources: [{
-          src: "http://vjs.zencdn.net/v/oceans.mp4",
-          type: "video/mp4",
+          // src: "http://vjs.zencdn.net/v/oceans.mp4",
+          // type: "video/mp4",
+          src: "http://192.168.0.138:8001/live/py/index.m3u8",
+          type: "application/x-mpegURL",
           // src: "http://192.168.0.138:8001/live/py/index.mpd",
           // type: "application/dash+xml",
-          // src: "http://192.168.0.138:8001/live/py/index.m3u8",
-          // type: "application/x-mpegURL",
         }],
         fill: true,
         responsive: true,
@@ -85,6 +89,36 @@ export default {
       }
     }
   },
+  methods: {
+    startStream() {
+      axios
+          .get("http://localhost:8000/api/stream")
+          .then(response => (console.log(response)))
+      this.reloadPlayer();
+    },
+    stopStream() {
+      axios
+          .post("http://localhost:8000/api/stream")
+          .then(response => (console.log(response)))
+    },
+    reloadPlayer() {
+      console.log("Reloading Player...");
+      this.$refs.videoPlayer.player.src(this.videoOptions.sources)
+      this.$refs.videoPlayer.player.load();
+      this.$refs.videoPlayer.player.play();
+    }
+  },
+  mounted() {
+    // this.$refs.videoPlayer.$on(
+    //     'error',
+    //     setTimeout(() => {
+    //           console.log("Resetting Player...");
+    //           // console.log(this.$refs.videoPlayer);
+    //           this.$refs.videoPlayer.player.reset();
+    //         }, 2000
+    //     ));
+
+  }
 
 }
 </script>
