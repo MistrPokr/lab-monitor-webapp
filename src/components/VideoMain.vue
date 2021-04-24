@@ -4,18 +4,25 @@
       <b-card>
         <b-form>
           <b-form-group id="" label="" label-for="">
+            <b-form-select
+                v-model="ttsPrerecorded"
+                :options="selectPrerecordedOptions"
+            ></b-form-select>
+
             <b-form-textarea
                 id="textarea"
                 v-model="messageText"
                 placeholder="Enter something..."
                 rows="3"
                 max-rows="6"
+                v-if="!ttsPrerecorded"
             >
             </b-form-textarea>
             <b-form-radio-group
                 id="radio-group"
                 name="radio-options"
                 :options="radioOptions"
+                v-if="!ttsPrerecorded"
             ></b-form-radio-group>
           </b-form-group>
         </b-form>
@@ -50,9 +57,14 @@ export default {
   data() {
     return {
       messageText: null,
+      ttsPrerecorded: true,
       radioOptions: [
         {text: 'Male Voice', value: 'male1'},
         {text: 'Female Voice', value: 'female1'},
+      ],
+      selectPrerecordedOptions: [
+        {value: true, text: 'Prerecorded Text'},
+        {value: false, text: 'Custom Text'},
       ],
       videoOptions: {
         // autoplay: 'muted',
