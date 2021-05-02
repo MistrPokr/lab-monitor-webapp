@@ -5,8 +5,9 @@
     <!--    TODO Move video player to top for sm/md views-->
     <v-row>
       <v-col
-          class="ml-4 mt-4"
-          cols="4">
+          class="mt-4"
+          cols="12" sm="12" md="4" lg="4" xl="4"
+          order="12" order-md="1">
         <v-card
             class="mb-4"
         >
@@ -102,9 +103,10 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-spacer></v-spacer>
       <v-col class="mt-4"
-             cols="7">
+             cols="12" sm="12" md="8" lg="8" xl="8"
+             order="1" order-md="2"
+      >
         <v-card>
           <v-card-title>
             LIVE FEED
