@@ -1,0 +1,14 @@
+{
+  "appId": "com.scie.labeye",
+  "appName": "LabEye",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {},
+  "linuxAndroidStudioPath": "/usr/bin/android-studio"
+}
