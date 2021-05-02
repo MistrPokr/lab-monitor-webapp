@@ -8,6 +8,11 @@ export default new Router({
     routes: [{
         path: "/",
         name: "mainVideoView",
-        component: ()=>import("./components/VideoMain")
-    }]
+        component: () => import("./components/VideoMain")
+    },
+        {
+            path: "/vuetify",
+            name: "vuetifyView",
+            component: () => import("./components/vuetifyView")
+        },]
 })

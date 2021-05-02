@@ -1,66 +1,119 @@
 <template>
-  <div class="row mt-4">
-    <div class="col ml-4">
-      <b-card>
-        <b-form>
-          <b-form-group id="" label="" label-for="">
-            <b-form-select
-                v-model="ttsPrerecorded"
-                :options="selectPrerecordedOptions"
-            ></b-form-select>
-
-            <b-form-textarea
-                id="textarea"
-                v-model="messageText"
-                placeholder="Enter something..."
-                rows="3"
-                max-rows="6"
-                v-if="!ttsPrerecorded"
-            >
-            </b-form-textarea>
-            <b-form-radio-group
-                id="radio-group"
-                name="radio-options"
-                :options="radioOptions"
-                v-if="!ttsPrerecorded"
-            ></b-form-radio-group>
-          </b-form-group>
-        </b-form>
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
-      </b-card>
-      <b-card>
-        <p>Current Angle:
-          <span class="badge badge-success">4</span>
-        </p>
-        <b-button-group size="sm">
-          <b-button>Rotate Left</b-button>
-          <b-button variant="primary"> Reset</b-button>
-          <b-button>Rotate Right</b-button>
-        </b-button-group>
-      </b-card>
-      <b-card>
-        <div>
-          LIVE
-        </div>
-        <b-button-group size="sm">
-          <!--          TODO Whole card changes color on stream status change; e.g. Red on live stream. -->
-          <b-button @click="startStream">
-            Start Stream
-          </b-button>
-          <b-button @click="stopStream" variant="danger">
-            Stop Stream
-          </b-button>
-        </b-button-group>
-        <div>
-          <b-button @click="reloadPlayer" variant="primary" size="sm">Reload Player</b-button>
-        </div>
-      </b-card>
-    </div>
-    <div class="col-8 mr-4">
-      <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
-    </div>
-  </div>
+  <v-container
+      fluid
+      class="grey lighten-5 mb-6">
+    <!--    TODO Move video player to top for sm/md views-->
+    <v-row>
+      <v-col
+          class="ml-4 mt-4"
+          cols="4">
+        <v-card
+            class="mb-4"
+        >
+          <v-card-title>
+            Voice Controls
+          </v-card-title>
+          <!--      one action component per v-card-actions-->
+          <v-divider></v-divider>
+          <v-card-actions class="mx-2">
+            <v-form>
+              <v-select
+                  v-model="ttsPrerecorded"
+                  :items="selectPrerecordedOptions"
+                  item-text="text"
+                  item-value="value">
+              </v-select>
+              <v-text-field
+                  id="textarea"
+                  v-model="messageText"
+                  placeholder="Enter something..."
+                  rows="3"
+                  max-rows="6"
+                  v-if="!ttsPrerecorded"
+              >
+              </v-text-field>
+              <v-radio-group v-model="speechChoice">
+                <v-radio v-for="str in speechOptions"
+                         :key=str
+                         :label=str
+                         :value=str
+                >
+                </v-radio>
+              </v-radio-group>
+            </v-form>
+          </v-card-actions>
+          <v-card-actions class="mx-2">
+            <v-btn color="primary">
+              SUBMIT
+            </v-btn>
+            <v-btn color="">RESET</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card
+            class="mb-4"
+        >
+          <v-card-title>
+            <div>Servo Controls</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <!--              TODO Method to get current servo angle-->
+            <!--            TODO Add slider? -->
+            <div>
+              Current Angle:
+              <v-chip>
+                <b>45</b>
+              </v-chip>
+            </div>
+          </v-card-text>
+          <v-card-actions class="mx-2">
+            <v-btn color="">LEFT</v-btn>
+            <v-btn color="primary">RESET</v-btn>
+            <v-btn color="">RIGHT</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card class="mb-4">
+          <v-card-title>
+            Stream Controls
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            STREAM STATUS:
+            <b>LIVE</b>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+                color=""
+                @click="startStream"
+            >Start Stream
+            </v-btn>
+            <v-btn
+                color="red"
+                @click="stopStream"
+            >Stop Stream
+            </v-btn>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn
+                color="primary"
+                @click="reloadPlayer"
+            >Reload Player
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col class="mt-4"
+             cols="7">
+        <v-card>
+          <v-card-title>
+            LIVE FEED
+          </v-card-title>
+          <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -76,10 +129,11 @@ export default {
     return {
       messageText: null,
       ttsPrerecorded: true,
-      radioOptions: [
-        {text: 'Male Voice', value: 'male1'},
-        {text: 'Female Voice', value: 'female1'},
+      speechOptions: [
+        "A lovely evening! ",
+        "How's it going? "
       ],
+      speechChoice: "",
       selectPrerecordedOptions: [
         {value: true, text: 'Prerecorded Text'},
         {value: false, text: 'Custom Text'},
@@ -88,10 +142,19 @@ export default {
         // autoplay: 'muted',
         controls: true,
         sources: [{
+          // Dummy MP4 url
           // src: "http://vjs.zencdn.net/v/oceans.mp4",
           // type: "video/mp4",
-          src: "http://192.168.0.138:8001/live/py/index.m3u8",
+
+          // Dummy HLS url from Akamai
+          src: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
           type: "application/x-mpegURL",
+
+          // HLS
+          // src: "http://192.168.0.138:8001/live/py/index.m3u8",
+          // type: "application/x-mpegURL",
+
+          // DASH (disabled in media server config)
           // src: "http://192.168.0.138:8001/live/py/index.mpd",
           // type: "application/dash+xml",
         }],
