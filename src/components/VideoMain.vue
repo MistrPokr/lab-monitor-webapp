@@ -1,82 +1,119 @@
 <template>
-  <v-row
-      class="mt-4"
-      align="center"
-  >
-    <v-col
-        class="ml-4"
-        cols="4">
-      <v-row class="ma-auto mb-3">
-        <v-card>
-          <v-form>
-            <v-select
-                v-model="ttsPrerecorded"
-                :items="selectPrerecordedOptions"
-                item-text="text"
-                item-value="value"
-            ></v-select>
-
-            <v-text-field
-                id="textarea"
-                v-model="messageText"
-                placeholder="Enter something..."
-                rows="3"
-                max-rows="6"
-                v-if="!ttsPrerecorded"
-            >
-            </v-text-field>
-            <v-radio
-                id="radio-group"
-                name="radio-options"
-                :options="radioOptions"
-                v-if="!ttsPrerecorded"
-            ></v-radio>
-          </v-form>
-          <v-btn type="submit" color="primary">Submit</v-btn>
-          <v-btn type="reset" color="danger">Reset</v-btn>
+  <v-container
+      fluid
+      class="grey lighten-5 mb-6">
+    <!--    TODO Move video player to top for sm/md views-->
+    <v-row>
+      <v-col
+          class="ml-4 mt-4"
+          cols="4">
+        <v-card
+            class="mb-4"
+        >
+          <v-card-title>
+            Voice Controls
+          </v-card-title>
+          <!--      one action component per v-card-actions-->
+          <v-divider></v-divider>
+          <v-card-actions class="mx-2">
+            <v-form>
+              <v-select
+                  v-model="ttsPrerecorded"
+                  :items="selectPrerecordedOptions"
+                  item-text="text"
+                  item-value="value">
+              </v-select>
+              <v-text-field
+                  id="textarea"
+                  v-model="messageText"
+                  placeholder="Enter something..."
+                  rows="3"
+                  max-rows="6"
+                  v-if="!ttsPrerecorded"
+              >
+              </v-text-field>
+              <v-radio-group v-model="speechChoice">
+                <v-radio v-for="str in speechOptions"
+                         :key=str
+                         :label=str
+                         :value=str
+                >
+                </v-radio>
+              </v-radio-group>
+            </v-form>
+          </v-card-actions>
+          <v-card-actions class="mx-2">
+            <v-btn color="primary">
+              SUBMIT
+            </v-btn>
+            <v-btn color="">RESET</v-btn>
+          </v-card-actions>
         </v-card>
-      </v-row>
-      <v-row class="ma-auto mb-3">
-        <v-card>
-          <p>Current Angle:
-            <span class="badge badge-success">4</span>
-          </p>
-          <v-row size="sm">
-            <v-btn>Rotate Left</v-btn>
-            <v-btn color="primary">Reset</v-btn>
-            <v-btn>Rotate Right</v-btn>
-          </v-row>
+        <v-card
+            class="mb-4"
+        >
+          <v-card-title>
+            <div>Servo Controls</div>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <!--              TODO Method to get current servo angle-->
+            <!--            TODO Add slider? -->
+            <div>
+              Current Angle:
+              <v-chip>
+                <b>45</b>
+              </v-chip>
+            </div>
+          </v-card-text>
+          <v-card-actions class="mx-2">
+            <v-btn color="">LEFT</v-btn>
+            <v-btn color="primary">RESET</v-btn>
+            <v-btn color="">RIGHT</v-btn>
+          </v-card-actions>
         </v-card>
-      </v-row>
-      <v-row class="ma-auto mb-3">
-        <v-card>
-          <v-row>
-            <v-card-title>
-              LIVE
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-actions align="center" justify="space-around">
-              <!--          TODO Whole card changes color on stream status change; e.g. Red on live stream. -->
-              <v-btn @click="startStream">
-                Start Stream
-              </v-btn>
-              <v-btn @click="stopStream" color="deep-orange">
-                Stop Stream
-              </v-btn>
-              <v-btn @click="reloadPlayer" color="primary" size="sm">
-                Reload Player
-              </v-btn>
-            </v-card-actions>
-          </v-row>
+        <v-card class="mb-4">
+          <v-card-title>
+            Stream Controls
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            STREAM STATUS:
+            <b>LIVE</b>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+                color=""
+                @click="startStream"
+            >Start Stream
+            </v-btn>
+            <v-btn
+                color="red"
+                @click="stopStream"
+            >Stop Stream
+            </v-btn>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn
+                color="primary"
+                @click="reloadPlayer"
+            >Reload Player
+            </v-btn>
+          </v-card-actions>
         </v-card>
-      </v-row>
-    </v-col>
-    <v-spacer></v-spacer>
-    <v-col class="mr-4"
-           cols="6">
-      <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
-    </v-col>
-  </v-row>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col class="mt-4"
+             cols="7">
+        <v-card>
+          <v-card-title>
+            LIVE FEED
+          </v-card-title>
+          <video-player class="vjs-big-play-centered" ref="videoPlayer" :options="videoOptions"/>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -92,10 +129,11 @@ export default {
     return {
       messageText: null,
       ttsPrerecorded: true,
-      radioOptions: [
-        {text: 'Male Voice', value: 'male1'},
-        {text: 'Female Voice', value: 'female1'},
+      speechOptions: [
+        "A lovely evening! ",
+        "How's it going? "
       ],
+      speechChoice: "",
       selectPrerecordedOptions: [
         {value: true, text: 'Prerecorded Text'},
         {value: false, text: 'Custom Text'},
