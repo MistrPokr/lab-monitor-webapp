@@ -1,29 +1,23 @@
 <template>
   <!-- App.vue -->
 
-  <v-app>
-    <v-navigation-drawer app>
-      <!-- -->
+  <v-app id="inspire">
+    <v-navigation-drawer
+        v-model="drawer"
+        app
+    >
+      <!--  -->
     </v-navigation-drawer>
 
     <v-app-bar app>
-      <!-- -->
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Sizes your content based upon application components -->
     <v-main>
-
-      <!-- Provides the application the proper gutter -->
-      <v-container fluid>
-
-        <!-- If using vue-router -->
-        <router-view></router-view>
-      </v-container>
+      <router-view/>
     </v-main>
-
-    <v-footer app>
-      <!-- -->
-    </v-footer>
   </v-app>
 </template>
 
@@ -33,7 +27,7 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
+    drawer: null,
   }),
 };
 </script>
