@@ -63,14 +63,14 @@
             <div>
               Current Angle:
               <v-chip>
-                <b>45</b>
+                <b>{{ servoAngle ? servoAngle : "N/A" }}</b>
               </v-chip>
             </div>
           </v-card-text>
           <v-card-actions class="mx-2">
-            <v-btn color="">LEFT</v-btn>
-            <v-btn color="primary">RESET</v-btn>
-            <v-btn color="">RIGHT</v-btn>
+            <v-btn color="" @click="incrementServoAngle(1)">LEFT</v-btn>
+            <v-btn color="primary" @click="setServoAngle(90)">RESET</v-btn>
+            <v-btn color="" @click="incrementServoAngle(-1)">RIGHT</v-btn>
           </v-card-actions>
         </v-card>
         <v-card class="mb-4">
@@ -163,7 +163,9 @@ export default {
         fill: true,
         responsive: true,
         aspectRatio: '16:9',
-      }
+      },
+      servoAngle: null,
+      incrementStep: 2,
     }
   },
   methods: {
@@ -183,9 +185,36 @@ export default {
       this.$refs.videoPlayer.player.src(this.videoOptions.sources)
       this.$refs.videoPlayer.player.load();
       this.$refs.videoPlayer.player.play();
+    },
+    getServoAngle() {
+      axios
+          .get(
+              "http://localhost:8000/api/servo"
+          )
+          .then(
+              response => {
+                this.servoAngle = parseInt(response.data.angle);
+              }
+          )
+    },
+    setServoAngle(angle) {
+      let postUrl = "http://localhost:8000/api/servo/" + String(angle) + "/";
+      axios
+          .post(postUrl)
+          .then(
+              response => {
+                console.log(response);
+              }
+          )
+      this.getServoAngle();
+    },
+    incrementServoAngle(dir) {
+      // increment direction (1 or -1)
+      this.setServoAngle(parseInt(this.servoAngle + this.incrementStep * dir));
     }
   },
   mounted() {
+    this.getServoAngle();
     // this.$refs.videoPlayer.$on(
     //     'error',
     //     setTimeout(() => {
