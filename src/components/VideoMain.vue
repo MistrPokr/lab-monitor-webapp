@@ -58,12 +58,10 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <!--              TODO Method to get current servo angle-->
-            <!--            TODO Add slider? -->
             <div>
               Current Angle:
               <v-chip>
-                <b>{{ servoAngle ? servoAngle : "N/A" }}</b>
+                <b>{{ servoAngle != null ? servoAngle : "N/A" }}</b>
               </v-chip>
               <v-snackbar
                   v-model="warnings.servoExceeded"
@@ -84,10 +82,21 @@
               </v-snackbar>
             </div>
           </v-card-text>
+          <v-card-actions>
+            <v-slider
+                v-model="servoSlider"
+                @change="setServoAngle(servoSlider)"
+                :max="180"
+                :min="0"
+                step="10"
+                thumb-label
+                ticks
+            ></v-slider>
+          </v-card-actions>
           <v-card-actions class="mx-2">
-            <v-btn color="" @click="incrementServoAngle(1)">LEFT</v-btn>
+            <v-btn color="" @click="incrementServoAngle(-1)">LEFT</v-btn>
             <v-btn color="primary" @click="setServoAngle(90)">RESET</v-btn>
-            <v-btn color="" @click="incrementServoAngle(-1)">RIGHT</v-btn>
+            <v-btn color="" @click="incrementServoAngle(1)">RIGHT</v-btn>
           </v-card-actions>
         </v-card>
         <v-card class="mb-4">
@@ -185,6 +194,7 @@ export default {
         aspectRatio: '16:9',
       },
       servoAngle: null,
+      servoSlider: null,
       incrementStep: 2,
     }
   },
@@ -214,6 +224,7 @@ export default {
           .then(
               response => {
                 this.servoAngle = parseInt(response.data.angle);
+                this.servoSlider = this.servoAngle;
               }
           )
     },
@@ -241,17 +252,7 @@ export default {
   },
   mounted() {
     this.getServoAngle();
-    // this.$refs.videoPlayer.$on(
-    //     'error',
-    //     setTimeout(() => {
-    //           console.log("Resetting Player...");
-    //           // console.log(this.$refs.videoPlayer);
-    //           this.$refs.videoPlayer.player.reset();
-    //         }, 2000
-    //     ));
-
-  }
-
+  },
 }
 </script>
 
