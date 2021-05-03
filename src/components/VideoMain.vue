@@ -65,6 +65,23 @@
               <v-chip>
                 <b>{{ servoAngle ? servoAngle : "N/A" }}</b>
               </v-chip>
+              <v-snackbar
+                  v-model="warnings.servoExceeded"
+                  :timeout="2000"
+                  color="black"
+              >
+                <div>Servo range exceeded!</div>
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                      color="blue"
+                      text
+                      v-bind="attrs"
+                      @click="warnings.servoExceeded = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
             </div>
           </v-card-text>
           <v-card-actions class="mx-2">
@@ -129,6 +146,9 @@ export default {
   },
   data() {
     return {
+      warnings: {
+        "servoExceeded": false,
+      },
       messageText: null,
       ttsPrerecorded: true,
       speechOptions: [
@@ -210,7 +230,13 @@ export default {
     },
     incrementServoAngle(dir) {
       // increment direction (1 or -1)
-      this.setServoAngle(parseInt(this.servoAngle + this.incrementStep * dir));
+      let newAngle = parseInt(this.servoAngle + this.incrementStep * dir);
+      if (newAngle <= 180 && newAngle >= 0) {
+        this.warnings.servoExceeded = false;
+        this.setServoAngle(newAngle);
+      } else {
+        this.warnings.servoExceeded = true;
+      }
     }
   },
   mounted() {
