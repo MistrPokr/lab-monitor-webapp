@@ -79,7 +79,11 @@
           <v-divider></v-divider>
           <v-card-text>
             STREAM STATUS:
-            <b>LIVE</b>
+            <div>
+              <b v-if="streamPid">ON AIR</b>
+              <b v-else>Not Streaming</b>
+            </div>
+            <div v-if="streamPid">PID={{ streamPid }}</div>
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -139,7 +143,6 @@ export default {
         {value: false, text: 'Custom Text'},
       ],
       videoOptions: {
-        // autoplay: 'muted',
         controls: true,
         sources: [{
           // Dummy MP4 url
@@ -147,12 +150,12 @@ export default {
           // type: "video/mp4",
 
           // Dummy HLS url from Akamai
-          src: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
-          type: "application/x-mpegURL",
+          // src: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+          // type: "application/x-mpegURL",
 
           // HLS
-          // src: "http://192.168.0.138:8001/live/py/index.m3u8",
-          // type: "application/x-mpegURL",
+          src: "http://192.168.0.138:8001/live/py/index.m3u8",
+          type: "application/x-mpegURL",
 
           // DASH (disabled in media server config)
           // src: "http://192.168.0.138:8001/live/py/index.mpd",
@@ -161,27 +164,35 @@ export default {
         fill: true,
         responsive: true,
         aspectRatio: '16:9',
-      }
+      },
+      streamPid: null
     }
   },
   methods: {
     startStream() {
       axios
           .get("http://localhost:8000/api/stream")
-          .then(response => (console.log(response)))
+          .then(response => {
+            console.log(response)
+            this.streamPid = response.data.pid;
+          })
       this.reloadPlayer();
     },
     stopStream() {
       axios
           .post("http://localhost:8000/api/stream")
-          .then(response => (console.log(response)))
+          .then(response => {
+            console.log(response);
+            this.streamPid = response.data.pid;
+          })
+      ;
     },
     reloadPlayer() {
       console.log("Reloading Player...");
       this.$refs.videoPlayer.player.src(this.videoOptions.sources)
       this.$refs.videoPlayer.player.load();
       this.$refs.videoPlayer.player.play();
-    }
+    },
   },
   mounted() {
     // this.$refs.videoPlayer.$on(
