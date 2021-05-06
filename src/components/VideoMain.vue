@@ -58,19 +58,45 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <!--              TODO Method to get current servo angle-->
-            <!--            TODO Add slider? -->
             <div>
               Current Angle:
               <v-chip>
-                <b>45</b>
+                <b>{{ servoAngle != null ? servoAngle : "N/A" }}</b>
               </v-chip>
+              <v-snackbar
+                  v-model="warnings.servoExceeded"
+                  :timeout="2000"
+                  color="black"
+              >
+                <div>Servo range exceeded!</div>
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                      color="blue"
+                      text
+                      v-bind="attrs"
+                      @click="warnings.servoExceeded = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
             </div>
           </v-card-text>
+          <v-card-actions>
+            <v-slider
+                v-model="servoSlider"
+                @change="setServoAngle(servoSlider)"
+                :max="180"
+                :min="0"
+                step="10"
+                thumb-label
+                ticks
+            ></v-slider>
+          </v-card-actions>
           <v-card-actions class="mx-2">
-            <v-btn color="">LEFT</v-btn>
-            <v-btn color="primary">RESET</v-btn>
-            <v-btn color="">RIGHT</v-btn>
+            <v-btn color="" @click="incrementServoAngle(-1)">LEFT</v-btn>
+            <v-btn color="primary" @click="setServoAngle(90)">RESET</v-btn>
+            <v-btn color="" @click="incrementServoAngle(1)">RIGHT</v-btn>
           </v-card-actions>
         </v-card>
         <v-card class="mb-4">
@@ -129,6 +155,9 @@ export default {
   },
   data() {
     return {
+      warnings: {
+        "servoExceeded": false,
+      },
       messageText: null,
       ttsPrerecorded: true,
       speechOptions: [
@@ -163,7 +192,10 @@ export default {
         fill: true,
         responsive: true,
         aspectRatio: '16:9',
-      }
+      },
+      servoAngle: null,
+      servoSlider: null,
+      incrementStep: 2,
     }
   },
   methods: {
@@ -183,20 +215,44 @@ export default {
       this.$refs.videoPlayer.player.src(this.videoOptions.sources)
       this.$refs.videoPlayer.player.load();
       this.$refs.videoPlayer.player.play();
+    },
+    getServoAngle() {
+      axios
+          .get(
+              "http://localhost:8000/api/servo"
+          )
+          .then(
+              response => {
+                this.servoAngle = parseInt(response.data.angle);
+                this.servoSlider = this.servoAngle;
+              }
+          )
+    },
+    setServoAngle(angle) {
+      let postUrl = "http://localhost:8000/api/servo/" + String(angle) + "/";
+      axios
+          .post(postUrl)
+          .then(
+              response => {
+                console.log(response);
+              }
+          )
+      this.getServoAngle();
+    },
+    incrementServoAngle(dir) {
+      // increment direction (1 or -1)
+      let newAngle = parseInt(this.servoAngle + this.incrementStep * dir);
+      if (newAngle <= 180 && newAngle >= 0) {
+        this.warnings.servoExceeded = false;
+        this.setServoAngle(newAngle);
+      } else {
+        this.warnings.servoExceeded = true;
+      }
     }
   },
   mounted() {
-    // this.$refs.videoPlayer.$on(
-    //     'error',
-    //     setTimeout(() => {
-    //           console.log("Resetting Player...");
-    //           // console.log(this.$refs.videoPlayer);
-    //           this.$refs.videoPlayer.player.reset();
-    //         }, 2000
-    //     ));
-
-  }
-
+    this.getServoAngle();
+  },
 }
 </script>
 
