@@ -14,31 +14,40 @@
             item-value="value"
         >
         </v-select>
-        <v-text-field
-            id="textarea"
-            v-model="messageText"
-            placeholder="Enter something..."
-            rows="3"
-            max-rows="6"
-            v-if="!ttsPrerecorded"
-        >
-        </v-text-field>
-        <v-radio-group v-if="ttsPrerecorded" v-model="speechChoice">
-          <v-radio
-              v-for="str in speechOptions"
-              :key="str"
-              :label="str"
-              :value="str"
+        <div v-if="!ttsPrerecorded">
+          <v-text-field
+              id="textarea"
+              v-model="messageText"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
           >
-          </v-radio>
-        </v-radio-group>
+          </v-text-field>
+          <v-btn color="primary" @click="voiceHandler">
+            SUBMIT
+          </v-btn>
+          <v-btn color="">RESET</v-btn>
+          <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
+        </div>
+        <div v-else>
+          <v-card-actions>
+            <v-radio-group v-model="speechChoice">
+              <v-radio
+                  v-for="str in speechOptions"
+                  :key="str"
+                  :label="str"
+                  :value="str"
+              >
+              </v-radio>
+            </v-radio-group>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn color="primary" @click="voiceHandler">
+              PLAY
+            </v-btn>
+          </v-card-actions>
+        </div>
       </v-form>
-    </v-card-actions>
-    <v-card-actions class="mx-2">
-      <v-btn color="primary" @click="voiceHandler">
-        SUBMIT
-      </v-btn>
-      <v-btn color="">RESET</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -58,6 +67,7 @@ export default {
         {value: true, text: "Prerecorded Text"},
         {value: false, text: "Custom Text"},
       ],
+      instantPlay: false,
     }
   },
   methods: {
@@ -69,8 +79,9 @@ export default {
             .then()
       } else {
         // Sends text for TTS
-        let newFormData = new FormData()
-        newFormData.append("text", this.messageText)
+        let newFormData = new FormData();
+        newFormData.append("text", this.messageText);
+        newFormData.append("play", this.instantPlay);
         axios({
           method: "post",
           url: "http://localhost:8000/voice/tts/",
