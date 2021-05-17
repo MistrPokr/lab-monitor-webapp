@@ -46,6 +46,9 @@
             <v-btn color="primary" @click="voiceHandler">
               PLAY
             </v-btn>
+            <v-btn @click="getVoiceList">
+              REFRESH
+            </v-btn>
           </v-card-actions>
         </div>
       </v-form>
