@@ -33,10 +33,10 @@
           <v-card-actions>
             <v-radio-group v-model="speechChoice">
               <v-radio
-                  v-for="str in speechOptions"
-                  :key="str"
-                  :label="str"
-                  :value="str"
+                  v-for="option in speechOptions"
+                  :key="option.id"
+                  :label="option.text"
+                  :value="option.id"
               >
               </v-radio>
             </v-radio-group>
@@ -61,7 +61,8 @@ export default {
     return {
       messageText: null,
       ttsPrerecorded: true,
-      speechOptions: ["A lovely evening! ", "How's it going? "],
+      speechOptions: null,
+      // speechOptions: ["A lovely evening! ", "How's it going? "],
       speechChoice: "",
       selectPrerecordedOptions: [
         {value: true, text: "Prerecorded Text"},
@@ -92,7 +93,18 @@ export default {
               console.log(response)
             })
       }
-    }
+    },
+    getVoiceList: function () {
+      let that = this
+      axios
+          .get("http://localhost:8000/voice/list/")
+          .then(function (response) {
+            that.speechOptions = response.data;
+          })
+    },
+  },
+  mounted() {
+    this.getVoiceList();
   }
 }
 </script>
