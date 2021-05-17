@@ -32,9 +32,12 @@
         <div v-else>
           <v-card-actions>
             <v-data-table
+                v-model="speechChoice"
                 :headers="speechHeaders"
                 :items="speechOptions"
                 :items-per-page="5"
+                :single-select="true"
+                show-select
                 class="elevation-1"
             >
             </v-data-table>
@@ -74,7 +77,7 @@ export default {
           text: null,
         }],
       // speechOptions: ["A lovely evening! ", "How's it going? "],
-      speechChoice: "",
+      speechChoice: null,
       selectPrerecordedOptions: [
         {value: true, text: "Prerecorded Text"},
         {value: false, text: "Custom Text"},
@@ -85,10 +88,13 @@ export default {
   methods: {
     voiceHandler: function () {
       if (this.ttsPrerecorded) {
-        //Use prerecorded voice or upload file
+        //If directly playing existing voice
+        let playUrl = "http://localhost:8000/voice/play/" + String(this.speechChoice[0].id) + "/"
         axios
-            .post()
-            .then()
+            .post(playUrl)
+            .then(function (response) {
+              console.log(response)
+            })
       } else {
         // Sends text for TTS
         let newFormData = new FormData();
