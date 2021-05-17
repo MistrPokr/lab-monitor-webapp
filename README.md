@@ -1,5 +1,7 @@
 # lab_monitor_webapp
 
+Frontend for [lab-monitor-django](https://github.com/MistrPokr/lab-monitor-django)
+
 ## Project setup
 ```
 npm install
