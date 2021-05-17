@@ -31,15 +31,13 @@
         </div>
         <div v-else>
           <v-card-actions>
-            <v-radio-group v-model="speechChoice">
-              <v-radio
-                  v-for="option in speechOptions"
-                  :key="option.id"
-                  :label="option.text"
-                  :value="option.id"
-              >
-              </v-radio>
-            </v-radio-group>
+            <v-data-table
+                :headers="speechHeaders"
+                :items="speechOptions"
+                :items-per-page="5"
+                class="elevation-1"
+            >
+            </v-data-table>
           </v-card-actions>
           <v-card-actions>
             <v-btn color="primary" @click="voiceHandler">
@@ -61,7 +59,20 @@ export default {
     return {
       messageText: null,
       ttsPrerecorded: true,
-      speechOptions: null,
+      speechHeaders: [
+        {
+          text: 'ID',
+          value: 'id'
+        },
+        {
+          text: 'Text',
+          value: 'text'
+        }],
+      speechOptions: [
+        {
+          id: null,
+          text: null,
+        }],
       // speechOptions: ["A lovely evening! ", "How's it going? "],
       speechChoice: "",
       selectPrerecordedOptions: [
