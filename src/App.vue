@@ -27,7 +27,7 @@ export default {
   name: 'App',
 
   data: () => ({
-    drawer: null,
+    drawer: false,
   }),
 };
 </script>

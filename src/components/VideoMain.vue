@@ -12,48 +12,7 @@
         order="12"
         order-md="1"
       >
-        <v-card class="mb-4">
-          <v-card-title>
-            Voice Controls
-          </v-card-title>
-          <!--      one action component per v-card-actions-->
-          <v-divider></v-divider>
-          <v-card-actions class="mx-2">
-            <v-form>
-              <v-select
-                v-model="ttsPrerecorded"
-                :items="selectPrerecordedOptions"
-                item-text="text"
-                item-value="value"
-              >
-              </v-select>
-              <v-text-field
-                id="textarea"
-                v-model="messageText"
-                placeholder="Enter something..."
-                rows="3"
-                max-rows="6"
-                v-if="!ttsPrerecorded"
-              >
-              </v-text-field>
-              <v-radio-group v-model="speechChoice">
-                <v-radio
-                  v-for="str in speechOptions"
-                  :key="str"
-                  :label="str"
-                  :value="str"
-                >
-                </v-radio>
-              </v-radio-group>
-            </v-form>
-          </v-card-actions>
-          <v-card-actions class="mx-2">
-            <v-btn color="primary">
-              SUBMIT
-            </v-btn>
-            <v-btn color="">RESET</v-btn>
-          </v-card-actions>
-        </v-card>
+        <text-to-speech></text-to-speech>
         <v-card class="mb-4">
           <v-card-title>
             <div>Servo Controls</div>
@@ -155,13 +114,13 @@
 </template>
 
 <script>
-// import VideoPlayer from "@/components/VideoPlayer";
 import axios from "axios";
+import TextToSpeech from "@/components/TextToSpeech";
 
 export default {
   name: "VideoMain",
   components: {
-    // VideoPlayer,
+    TextToSpeech
   },
   data() {
     return {
