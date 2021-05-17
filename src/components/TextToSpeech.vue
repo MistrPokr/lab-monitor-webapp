@@ -31,12 +31,22 @@
         </div>
         <div v-else>
           <v-card-actions>
+            <v-text-field
+                v-model="speechSearch"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+            ></v-text-field>
+          </v-card-actions>
+          <v-card-actions>
             <v-data-table
                 v-model="speechChoice"
                 :headers="speechHeaders"
                 :items="speechOptions"
                 :items-per-page="5"
                 :single-select="true"
+                :search="speechSearch"
                 show-select
                 class="elevation-1"
             >
@@ -81,6 +91,7 @@ export default {
         }],
       // speechOptions: ["A lovely evening! ", "How's it going? "],
       speechChoice: null,
+      speechSearch: "",
       selectPrerecordedOptions: [
         {value: true, text: "Prerecorded Text"},
         {value: false, text: "Custom Text"},
