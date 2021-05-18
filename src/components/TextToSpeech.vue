@@ -5,7 +5,7 @@
     </v-card-title>
     <!--      one action component per v-card-actions-->
     <v-divider></v-divider>
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" fixed-tabs>
       <v-tab>
         Prerecorded
       </v-tab>
