@@ -5,14 +5,15 @@ Vue.use(Router);
 
 export default new Router({
     mode: "history",
-    routes: [{
-        path: "/",
-        name: "mainVideoView",
-        component: () => import("./components/VideoMain")
-    },
+    routes: [
         {
-            path: "/vuetify",
-            name: "vuetifyView",
-            component: () => import("./components/vuetifyView")
-        },]
+            path: "/",
+            name: "homeView",
+            component: () => import("./views/Home")
+        },
+        {
+            path: "/login",
+            name: "userView",
+            component: () => import("./views/User"),
+        }]
 })

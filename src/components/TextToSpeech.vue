@@ -5,31 +5,15 @@
     </v-card-title>
     <!--      one action component per v-card-actions-->
     <v-divider></v-divider>
-    <v-card-actions class="mx-2">
-      <v-form>
-        <v-select
-            v-model="ttsPrerecorded"
-            :items="selectPrerecordedOptions"
-            item-text="text"
-            item-value="value"
-        >
-        </v-select>
-        <div v-if="!ttsPrerecorded">
-          <v-text-field
-              id="textarea"
-              v-model="messageText"
-              placeholder="Enter something..."
-              rows="3"
-              max-rows="6"
-          >
-          </v-text-field>
-          <v-btn color="primary" @click="voiceHandler">
-            SUBMIT
-          </v-btn>
-          <v-btn color="">RESET</v-btn>
-          <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
-        </div>
-        <div v-else>
+    <v-tabs v-model="tab" fixed-tabs>
+      <v-tab>
+        Prerecorded
+      </v-tab>
+      <v-tab>
+        Custom
+      </v-tab>
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
           <v-card-actions>
             <v-text-field
                 v-model="speechSearch"
@@ -53,16 +37,31 @@
             </v-data-table>
           </v-card-actions>
           <v-card-actions>
-            <v-btn color="primary" @click="voiceHandler">
+            <v-btn color="primary" @click="reuseVoiceHandler">
               PLAY
             </v-btn>
             <v-btn @click="getVoiceList">
               REFRESH
             </v-btn>
           </v-card-actions>
-        </div>
-      </v-form>
-    </v-card-actions>
+        </v-tab-item>
+        <v-tab-item class="mx-2">
+          <v-text-field
+              id="textarea"
+              v-model="messageText"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
+          >
+          </v-text-field>
+          <v-btn color="primary" @click="newVoiceHandler">
+            SUBMIT
+          </v-btn>
+          <v-btn color="">RESET</v-btn>
+          <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-tabs>
   </v-card>
 </template>
 
@@ -73,6 +72,7 @@ export default {
   name: "TextToSpeech",
   data() {
     return {
+      tab: null,
       messageText: null,
       ttsPrerecorded: true,
       speechHeaders: [
@@ -100,27 +100,27 @@ export default {
     }
   },
   methods: {
-    voiceHandler: function () {
-      if (this.ttsPrerecorded) {
-        //If directly playing existing voice
-        let playUrl = "http://localhost:8000/voice/play/" + String(this.speechChoice[0].id) + "/"
-        axios
-            .post(playUrl)
-            .then(function (response) {
-              console.log(response)
-            })
-      } else {
-        // Sends text for TTS
-        let newJson = {
-          "text": this.messageText, 
-          "play": this.instantPlay, 
-        }
-        axios
-            .post("http://localhost:8000/voice/tts/", newJson)
-            .then(function (response) {
-              console.log(response)
-            })
+    reuseVoiceHandler: function () {
+      //If directly playing existing voice
+      let playUrl = "http://localhost:8000/voice/play/" + String(this.speechChoice[0].id) + "/"
+      axios
+          .post(playUrl)
+          .then(function (response) {
+            console.log(response)
+          })
+    },
+    newVoiceHandler: function () {
+      // Sends text for TTS
+      let newJson = {
+        "text": this.messageText,
+        "play": this.instantPlay,
       }
+      axios
+          .post("http://localhost:8000/voice/tts/", newJson)
+          .then(function (response) {
+            console.log(response)
+          })
+      this.getVoiceList();
     },
     getVoiceList: function () {
       let that = this
