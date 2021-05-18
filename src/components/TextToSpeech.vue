@@ -111,15 +111,12 @@ export default {
     },
     newVoiceHandler: function () {
       // Sends text for TTS
-      let newFormData = new FormData();
-      newFormData.append("text", this.messageText);
-      newFormData.append("play", this.instantPlay);
-      axios({
-        method: "post",
-        url: "http://localhost:8000/voice/tts/",
-        data: newFormData,
-        headers: {"Content-Type": "multipart/form-data"},
-      })
+      let newJson = {
+        "text": this.messageText,
+        "play": this.instantPlay,
+      }
+      axios
+          .post("http://localhost:8000/voice/tts/", newJson)
           .then(function (response) {
             console.log(response)
           })
