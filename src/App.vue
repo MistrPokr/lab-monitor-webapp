@@ -4,13 +4,43 @@
   <v-app id="inspire">
     <v-navigation-drawer
         v-model="drawer"
-        app
+        absolute
+        temporary
     >
-      <!-- TODO Add drawer menu list -->
+      <v-list
+          nav
+          dense
+      >
+        <v-list-item-group
+            v-model="drawerGroup"
+            mandatory
+            color="teal"
+        >
+          <v-list-item @click="()=>{this.$router.push('/')}">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item @click="()=>{this.$router.push('/login')}">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Account</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar
+        app
+        color="teal"
+        dark
+    >
+      <v-app-bar-nav-icon
+          @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
       <v-toolbar-title>Lab Eye</v-toolbar-title>
     </v-app-bar>
@@ -28,6 +58,7 @@ export default {
 
   data: () => ({
     drawer: false,
+    drawerGroup: null,
   }),
 };
 </script>
