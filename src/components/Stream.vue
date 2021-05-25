@@ -1,19 +1,19 @@
 <template>
   <v-card class="mb-4">
     <v-card-title>
-      Stream Controls
+      直播控制
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
-      STREAM STATUS:
-      <b>LIVE</b>
+      直播状态：
+      <b>在线</b>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="" @click="startStream">Start Stream</v-btn>
-      <v-btn color="red" @click="stopStream">Stop Stream</v-btn>
+      <v-btn color="" @click="startStream">开始直播</v-btn>
+      <v-btn color="red" @click="stopStream">停止直播</v-btn>
     </v-card-actions>
     <v-card-actions>
-      <v-btn color="primary" @click="reloadPlayer">Reload Player</v-btn>
+      <v-btn color="primary" @click="reloadPlayer">刷新播放器</v-btn>
     </v-card-actions>
   </v-card>
 </template>

@@ -1,12 +1,12 @@
 <template>
   <v-card class="mb-4">
     <v-card-title>
-      <div>Servo Controls</div>
+      <div>舵机控制</div>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
       <div>
-        Current Angle:
+        当前角度：
         <v-chip>
           <b>{{ servoAngle != null ? servoAngle : "N/A" }}</b>
         </v-chip>
@@ -15,7 +15,7 @@
             :timeout="2000"
             color="black"
         >
-          <div>Servo range exceeded!</div>
+          <div>调整角度已达极限</div>
           <template v-slot:action="{ attrs }">
             <v-btn
                 color="blue"
@@ -23,7 +23,7 @@
                 v-bind="attrs"
                 @click="warnings.servoExceeded = false"
             >
-              Close
+              关闭
             </v-btn>
           </template>
         </v-snackbar>
@@ -41,9 +41,9 @@
       ></v-slider>
     </v-card-actions>
     <v-card-actions class="mx-2">
-      <v-btn color="" @click="incrementServoAngle(-1)">LEFT</v-btn>
-      <v-btn color="primary" @click="setServoAngle(90)">RESET</v-btn>
-      <v-btn color="" @click="incrementServoAngle(1)">RIGHT</v-btn>
+      <v-btn color="" @click="incrementServoAngle(-1)">左转</v-btn>
+      <v-btn color="primary" @click="setServoAngle(90)">重置</v-btn>
+      <v-btn color="" @click="incrementServoAngle(1)">右转</v-btn>
     </v-card-actions>
   </v-card>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      LIVE FEED
+      直播画面
     </v-card-title>
     <v-card-actions>
       <v-img
