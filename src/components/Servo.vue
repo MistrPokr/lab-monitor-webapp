@@ -10,6 +10,12 @@
         <v-chip>
           <b>{{ servoAngle != null ? servoAngle : "N/A" }}</b>
         </v-chip>
+        <v-chip>
+          <b>温度：{{ temperature }}</b>
+        </v-chip>
+        <v-chip>
+          <b>湿度：{{ humidity }}</b>
+        </v-chip>
         <v-snackbar
             v-model="warnings.servoExceeded"
             :timeout="2000"
@@ -61,6 +67,8 @@ export default {
       servoAngle: null,
       servoSlider: null,
       incrementStep: 2,
+      temperature: 0,
+      humidity: 0,
     }
   },
   methods: {
@@ -87,9 +95,19 @@ export default {
         this.warnings.servoExceeded = true;
       }
     },
+    getDHTData() {
+      let that = this;
+      axios.get("http://localhost:8000/api/dht")
+          .then(function (response) {
+            console.log(response);
+            that.temperature = response.data.temperature;
+            that.humidity = response.data.humidity;
+          })
+    }
   },
   mounted() {
     this.getServoAngle();
+    this.timer = setInterval(this.getDHTData, 500);
   },
 }
 </script>
