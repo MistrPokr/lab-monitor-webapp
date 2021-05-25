@@ -29,13 +29,13 @@ export default {
   methods: {
     startStream() {
       axios
-          .get("http://localhost:8000/api/stream")
+          .get("/api/stream")
           .then((response) => console.log(response));
       this.reloadPlayer();
     },
     stopStream() {
       axios
-          .post("http://localhost:8000/api/stream")
+          .post("/api/stream")
           .then((response) => console.log(response));
     },
     reloadPlayer() {

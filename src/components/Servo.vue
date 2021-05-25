@@ -73,13 +73,13 @@ export default {
   },
   methods: {
     getServoAngle() {
-      axios.get("http://localhost:8000/api/servo").then((response) => {
+      axios.get("api/servo/").then((response) => {
         this.servoAngle = parseInt(response.data.angle);
         this.servoSlider = this.servoAngle;
       });
     },
     setServoAngle(angle) {
-      let postUrl = "http://localhost:8000/api/servo/" + String(angle) + "/";
+      let postUrl = "api/servo/" + String(angle) + "/";
       axios.post(postUrl).then((response) => {
         console.log(response);
       });
