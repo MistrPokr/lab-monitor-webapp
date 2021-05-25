@@ -102,7 +102,7 @@ export default {
   methods: {
     reuseVoiceHandler: function () {
       //If directly playing existing voice
-      let playUrl = "http://localhost:8000/voice/play/" + String(this.speechChoice[0].id) + "/"
+      let playUrl = "/voice/play/" + String(this.speechChoice[0].id) + "/"
       axios
           .post(playUrl)
           .then(function (response) {
@@ -116,7 +116,7 @@ export default {
         "play": this.instantPlay,
       }
       axios
-          .post("http://localhost:8000/voice/tts/", newJson)
+          .post("/voice/tts/", newJson)
           .then(function (response) {
             console.log(response)
           })
@@ -125,7 +125,7 @@ export default {
     getVoiceList: function () {
       let that = this
       axios
-          .get("http://localhost:8000/voice/list/")
+          .get("/voice/list/")
           .then(function (response) {
             that.speechOptions = response.data;
           })
