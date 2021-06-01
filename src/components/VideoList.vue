@@ -45,11 +45,11 @@ export default {
       ],
       tableHeaders: [
         {
-          text: "Name",
+          text: "文件名",
           value: "name",
         },
         {
-          text: "Actions",
+          text: "操作",
           value: "actions",
         },
         // {
