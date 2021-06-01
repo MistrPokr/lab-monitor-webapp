@@ -6,10 +6,27 @@
     <v-divider></v-divider>
     <v-card-actions>
       <v-data-table
+          v-model="selectedVideo"
           :headers="tableHeaders"
           :items="videoList"
+          single-select
+          show-select
       >
-
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+              small
+              class="mr-2"
+              @click="downloadVideo(item)"
+          >
+            mdi-download
+          </v-icon>
+          <v-icon
+              small
+              @click="deleteVideo(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
       </v-data-table>
     </v-card-actions>
   </v-card>
@@ -22,6 +39,7 @@ export default {
   name: "VideoList",
   data() {
     return {
+      selectedVideo: null,
       videoList: [
         {
           name: null,
@@ -31,6 +49,10 @@ export default {
         {
           text: "Name",
           value: "name",
+        },
+        {
+          text: "Actions",
+          value: "actions",
         },
         // {
         //   text: "Date & Time",
@@ -47,6 +69,12 @@ export default {
           .then(function (response) {
             that.videoList = response.data;
           })
+    },
+    downloadVideo: function (item) {
+      console.log(item.name);
+    },
+    deleteVideo: function (item) {
+      console.log(item.name);
     }
   },
   mounted() {
