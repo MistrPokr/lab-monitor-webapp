@@ -5,7 +5,10 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-data-table>
+      <v-data-table
+          :headers="tableHeaders"
+          :items="videoList"
+      >
 
       </v-data-table>
     </v-card-actions>
@@ -19,7 +22,21 @@ export default {
   name: "VideoList",
   data() {
     return {
-      videoList: null,
+      videoList: [
+        {
+          name: null,
+        }
+      ],
+      tableHeaders: [
+        {
+          text: "Name",
+          value: "name",
+        },
+        // {
+        //   text: "Date & Time",
+        //   value: "datetime"
+        // }
+      ]
     }
   },
   methods: {
