@@ -9,8 +9,6 @@
           v-model="selectedVideo"
           :headers="tableHeaders"
           :items="videoList"
-          single-select
-          show-select
       >
         <template v-slot:item.actions="{ item }">
           <v-icon
