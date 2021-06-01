@@ -78,7 +78,7 @@ export default {
         var fileLink = document.createElement('a');
 
         fileLink.href = fileURL;
-        fileLink.setAttribute('download', 'file.mp4');
+        fileLink.setAttribute('download', `${item.name}.mp4`);
         document.body.appendChild(fileLink);
 
         fileLink.click();
