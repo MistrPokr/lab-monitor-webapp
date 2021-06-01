@@ -1,11 +1,11 @@
 <template>
   <v-card>
     <v-card-title>
-      LIVE FEED
+      直播画面
     </v-card-title>
     <v-card-actions>
       <v-img
-          src="http://localhost:8091/0/stream"
+          :src="streamSource"
           lazy-src="https://images.unsplash.com/photo-1620125587503-54b5365229de"
       >
         <template v-slot:placeholder>
@@ -22,8 +22,15 @@
 </template>
 
 <script>
+import urls from "@/urls";
+
 export default {
-  name: "LivePlayer"
+  name: "LivePlayer",
+  data() {
+    return {
+      streamSource: urls.defaultDomain + ":8091" + "/0/stream/",
+    }
+  }
 }
 </script>
 

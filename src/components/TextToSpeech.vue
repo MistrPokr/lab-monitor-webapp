@@ -1,16 +1,16 @@
 <template>
   <v-card class="mb-4">
     <v-card-title>
-      Voice Controls
+      语音控制
     </v-card-title>
     <!--      one action component per v-card-actions-->
     <v-divider></v-divider>
     <v-tabs v-model="tab" fixed-tabs>
       <v-tab>
-        Prerecorded
+        历史语音
       </v-tab>
       <v-tab>
-        Custom
+        新语音
       </v-tab>
       <v-tabs-items v-model="tab">
         <v-tab-item>
@@ -38,10 +38,10 @@
           </v-card-actions>
           <v-card-actions>
             <v-btn color="primary" @click="reuseVoiceHandler">
-              PLAY
+              播放
             </v-btn>
             <v-btn @click="getVoiceList">
-              REFRESH
+              刷新
             </v-btn>
           </v-card-actions>
         </v-tab-item>
@@ -55,9 +55,9 @@
           >
           </v-text-field>
           <v-btn color="primary" @click="newVoiceHandler">
-            SUBMIT
+            提交
           </v-btn>
-          <v-btn color="">RESET</v-btn>
+          <v-btn color="">重置</v-btn>
           <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
         </v-tab-item>
       </v-tabs-items>
@@ -102,7 +102,7 @@ export default {
   methods: {
     reuseVoiceHandler: function () {
       //If directly playing existing voice
-      let playUrl = "http://localhost:8000/voice/play/" + String(this.speechChoice[0].id) + "/"
+      let playUrl = "/voice/play/" + String(this.speechChoice[0].id) + "/"
       axios
           .post(playUrl)
           .then(function (response) {
@@ -116,7 +116,7 @@ export default {
         "play": this.instantPlay,
       }
       axios
-          .post("http://localhost:8000/voice/tts/", newJson)
+          .post("/voice/tts/", newJson)
           .then(function (response) {
             console.log(response)
           })
@@ -125,7 +125,7 @@ export default {
     getVoiceList: function () {
       let that = this
       axios
-          .get("http://localhost:8000/voice/list/")
+          .get("/voice/list/")
           .then(function (response) {
             that.speechOptions = response.data;
           })

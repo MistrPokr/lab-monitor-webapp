@@ -12,8 +12,8 @@
           order="12"
           order-md="1"
       >
-        <text-to-speech></text-to-speech>
         <servo></servo>
+        <text-to-speech></text-to-speech>
         <stream></stream>
 
       </v-col>

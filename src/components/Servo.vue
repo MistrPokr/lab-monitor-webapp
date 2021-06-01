@@ -1,21 +1,27 @@
 <template>
   <v-card class="mb-4">
     <v-card-title>
-      <div>Servo Controls</div>
+      <div>舵机控制</div>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text>
       <div>
-        Current Angle:
+        当前角度：
         <v-chip>
           <b>{{ servoAngle != null ? servoAngle : "N/A" }}</b>
+        </v-chip>
+        <v-chip>
+          <b>温度：{{ temperature }}</b>
+        </v-chip>
+        <v-chip>
+          <b>湿度：{{ humidity }}</b>
         </v-chip>
         <v-snackbar
             v-model="warnings.servoExceeded"
             :timeout="2000"
             color="black"
         >
-          <div>Servo range exceeded!</div>
+          <div>调整角度已达极限</div>
           <template v-slot:action="{ attrs }">
             <v-btn
                 color="blue"
@@ -23,7 +29,7 @@
                 v-bind="attrs"
                 @click="warnings.servoExceeded = false"
             >
-              Close
+              关闭
             </v-btn>
           </template>
         </v-snackbar>
@@ -41,9 +47,9 @@
       ></v-slider>
     </v-card-actions>
     <v-card-actions class="mx-2">
-      <v-btn color="" @click="incrementServoAngle(-1)">LEFT</v-btn>
-      <v-btn color="primary" @click="setServoAngle(90)">RESET</v-btn>
-      <v-btn color="" @click="incrementServoAngle(1)">RIGHT</v-btn>
+      <v-btn color="" @click="incrementServoAngle(-1)">左转</v-btn>
+      <v-btn color="primary" @click="setServoAngle(90)">重置</v-btn>
+      <v-btn color="" @click="incrementServoAngle(1)">右转</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -61,17 +67,19 @@ export default {
       servoAngle: null,
       servoSlider: null,
       incrementStep: 2,
+      temperature: 0,
+      humidity: 0,
     }
   },
   methods: {
     getServoAngle() {
-      axios.get("http://localhost:8000/api/servo").then((response) => {
+      axios.get("api/servo/").then((response) => {
         this.servoAngle = parseInt(response.data.angle);
         this.servoSlider = this.servoAngle;
       });
     },
     setServoAngle(angle) {
-      let postUrl = "http://localhost:8000/api/servo/" + String(angle) + "/";
+      let postUrl = "api/servo/" + String(angle) + "/";
       axios.post(postUrl).then((response) => {
         console.log(response);
       });
@@ -87,9 +95,19 @@ export default {
         this.warnings.servoExceeded = true;
       }
     },
+    getDHTData() {
+      let that = this;
+      axios.get("api/dht")
+          .then(function (response) {
+            console.log(response);
+            that.temperature = response.data.temperature;
+            that.humidity = response.data.humidity;
+          })
+    }
   },
   mounted() {
     this.getServoAngle();
+    this.timer = setInterval(this.getDHTData, 500);
   },
 }
 </script>
