@@ -97,7 +97,7 @@ export default {
     },
     getDHTData() {
       let that = this;
-      axios.get("http://localhost:8000/api/dht")
+      axios.get("api/dht")
           .then(function (response) {
             console.log(response);
             that.temperature = response.data.temperature;
