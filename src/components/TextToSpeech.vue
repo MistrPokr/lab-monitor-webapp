@@ -31,9 +31,7 @@
                 :items-per-page="5"
                 :single-select="true"
                 :search="speechSearch"
-                show-select
-                class="elevation-1"
-            >
+                show-select            >
             </v-data-table>
           </v-card-actions>
           <v-card-actions>
