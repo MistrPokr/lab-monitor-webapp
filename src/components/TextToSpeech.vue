@@ -53,14 +53,27 @@
           </v-card-actions>
         </v-tab-item>
         <v-tab-item class="mx-2">
-          <v-text-field
-              id="textarea"
-              v-model="messageText"
-              placeholder="Enter something..."
-              rows="3"
-              max-rows="6"
-          >
-          </v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field
+                  id="textarea"
+                  v-model="messageText"
+                  placeholder="在此处输入广播内容…"
+                  rows="3"
+                  max-rows="6"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-select
+                  v-model="speakerSelect"
+                  :items="speakerChoice"
+                  item-text="text"
+                  item-value="value"
+                  label="发音选择"
+              ></v-select>
+            </v-col>
+          </v-row>
           <v-btn color="primary" @click="newVoiceHandler">
             提交
           </v-btn>
@@ -82,6 +95,15 @@ export default {
       tab: null,
       messageText: null,
       ttsPrerecorded: true,
+      speakerSelect: 0,
+      speakerChoice: [
+        {
+          text: "女声", value: 0
+        },
+        {
+          text: "男声", value: 1
+        },
+      ],
       speechHeaders: [
         {
           text: 'ID',
@@ -112,24 +134,27 @@ export default {
   },
   methods: {
     reuseVoiceHandler: function () {
+      let that = this;
       //If directly playing existing voice
       let playUrl = "/voice/file/" + String(this.speechChoice[0].id) + "/"
       axios
           .post(playUrl)
-          .then(function (response) {
-            console.log(response)
+          .then(function () {
+            that.getVoiceList();
           })
     },
     newVoiceHandler: function () {
+      let that = this;
       // Sends text for TTS
       let newJson = {
         "text": this.messageText,
         "play": this.instantPlay,
+        "speaker": this.speakerSelect
       }
       axios
           .post("/voice/tts/", newJson)
-          .then(function (response) {
-            console.log(response)
+          .then(function () {
+            that.getVoiceList();
           })
       this.getVoiceList();
     },
