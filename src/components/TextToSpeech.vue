@@ -31,7 +31,16 @@
                 :items-per-page="5"
                 :single-select="true"
                 :search="speechSearch"
-                show-select            >
+                show-select
+            >
+              <template v-slot:item.actions="{ item }">
+                <v-icon
+                    small
+                    @click="deleteVoice(item)"
+                >
+                  mdi-delete
+                </v-icon>
+              </template>
             </v-data-table>
           </v-card-actions>
           <v-card-actions>
@@ -56,7 +65,7 @@
             提交
           </v-btn>
           <v-btn color="">重置</v-btn>
-          <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
+          <v-checkbox v-model="instantPlay" label="立即播放？(若不勾选此项，将仅存入历史语音)"></v-checkbox>
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
@@ -81,7 +90,11 @@ export default {
         {
           text: 'Text',
           value: 'text'
-        }],
+        },
+        {
+          text: "操作",
+          value: "actions",
+        },],
       speechOptions: [
         {
           id: null,
@@ -100,7 +113,7 @@ export default {
   methods: {
     reuseVoiceHandler: function () {
       //If directly playing existing voice
-      let playUrl = "/voice/play/" + String(this.speechChoice[0].id) + "/"
+      let playUrl = "/voice/file/" + String(this.speechChoice[0].id) + "/"
       axios
           .post(playUrl)
           .then(function (response) {
@@ -128,6 +141,14 @@ export default {
             that.speechOptions = response.data;
           })
     },
+    deleteVoice: function (item) {
+      let that = this;
+      axios
+          .delete(`/voice/file/${item.id}`)
+          .then(function () {
+            that.getVoiceList();
+          })
+    }
   },
   mounted() {
     this.getVoiceList();
