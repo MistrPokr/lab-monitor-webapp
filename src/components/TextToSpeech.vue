@@ -113,7 +113,7 @@ export default {
   methods: {
     reuseVoiceHandler: function () {
       //If directly playing existing voice
-      let playUrl = "/voice/play/" + String(this.speechChoice[0].id) + "/"
+      let playUrl = "/voice/file/" + String(this.speechChoice[0].id) + "/"
       axios
           .post(playUrl)
           .then(function (response) {
