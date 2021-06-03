@@ -20,14 +20,14 @@
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>主页</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="()=>{this.$router.push('/login')}">
+          <v-list-item @click="()=>{this.$router.push('/videos')}">
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-video-box</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
+            <v-list-item-title>历史视频</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>

@@ -15,5 +15,11 @@ export default new Router({
             path: "/login",
             name: "userView",
             component: () => import("./views/User"),
-        }]
+        },
+        {
+            path: "/videos",
+            name: "videoArchiveView",
+            component: () => import("./views/VideoArchive")
+        },
+    ]
 })
