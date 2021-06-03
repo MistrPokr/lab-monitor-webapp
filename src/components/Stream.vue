@@ -70,14 +70,19 @@ export default {
           .post("/api/live/")
           .then(response => console.log(response.data))
     },
+    checkStream() {
+      let that = this;
+      axios
+          .get("/api/live")
+          .then(function (response) {
+            response.data.status === 1 ? that.liveStatus = true : that.liveStatus = false;
+          })
+    }
   },
   mounted() {
-    let that = this;
-    axios
-        .get("/api/live")
-        .then(function (response) {
-          response.data.status === 1 ? that.liveStatus = true : that.liveStatus = false;
-        })
+    this.timer = setInterval(() => {
+      this.checkStream();
+    }, 1000);
   }
 }
 </script>

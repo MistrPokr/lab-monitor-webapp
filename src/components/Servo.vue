@@ -106,7 +106,10 @@ export default {
   },
   mounted() {
     this.getServoAngle();
-    this.timer = setInterval(this.getDHTData, 500);
+    this.timer = setInterval(() => {
+      this.getDHTData();
+      this.getServoAngle();
+    }, 1000);
   },
 }
 </script>
