@@ -49,6 +49,10 @@ export default {
           value: "name",
         },
         {
+          text: "时间",
+          value: "time",
+        },
+        {
           text: "操作",
           value: "actions",
         },
@@ -70,7 +74,7 @@ export default {
     },
     downloadVideo: function (item) {
       axios({
-        url: `/video/download/${item.name}`,
+        url: `/video/download/${item.name}/`,
         method: 'GET',
         responseType: 'blob',
       }).then((response) => {
