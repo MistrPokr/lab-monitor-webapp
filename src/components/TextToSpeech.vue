@@ -65,7 +65,7 @@
             提交
           </v-btn>
           <v-btn color="">重置</v-btn>
-          <v-checkbox v-model="instantPlay" label="Play Instantly? "></v-checkbox>
+          <v-checkbox v-model="instantPlay" label="立即播放？(若不勾选此项，将仅存入历史语音)"></v-checkbox>
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
