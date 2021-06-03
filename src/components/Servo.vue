@@ -99,7 +99,6 @@ export default {
       let that = this;
       axios.get("api/dht")
           .then(function (response) {
-            console.log(response);
             that.temperature = response.data.temperature;
             that.humidity = response.data.humidity;
           })
