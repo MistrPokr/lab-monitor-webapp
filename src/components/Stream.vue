@@ -9,10 +9,7 @@
       <b>在线</b>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="" @click="startStream">开始直播</v-btn>
-      <v-btn color="red" @click="stopStream">停止直播</v-btn>
-    </v-card-actions>
-    <v-card-actions>
+      <v-btn color="red" @click="restartStream">重启直播</v-btn>
       <v-btn color="primary" @click="reloadPlayer">刷新播放器</v-btn>
     </v-card-actions>
   </v-card>
@@ -27,16 +24,10 @@ export default {
     return {};
   },
   methods: {
-    startStream() {
+    restartStream() {
       axios
-          .get("/api/stream")
-          .then((response) => console.log(response));
-      this.reloadPlayer();
-    },
-    stopStream() {
-      axios
-          .post("/api/stream")
-          .then((response) => console.log(response));
+          .post("/api/live/")
+          .then(response => console.log(response.data))
     },
     reloadPlayer() {
       console.log("Reloading Player...");
