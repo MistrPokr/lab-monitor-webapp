@@ -38,7 +38,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-btn class="mx-2" @click="reloadPlayer">刷新播放器</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -54,7 +53,7 @@ export default {
     };
   },
   methods: {
-    restartClickWrapper(){
+    restartClickWrapper() {
       this.warningDialog = false;
       this.restartStream();
     },
@@ -63,13 +62,7 @@ export default {
           .post("/api/live/")
           .then(response => console.log(response.data))
     },
-    reloadPlayer() {
-      console.log("Reloading Player...");
-      this.$refs.videoPlayer.player.src(this.videoOptions.sources);
-      this.$refs.videoPlayer.player.load();
-      this.$refs.videoPlayer.player.play();
-    },
-  }
+  },
 }
 </script>
 

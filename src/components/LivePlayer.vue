@@ -1,8 +1,17 @@
 <template>
   <v-card>
-    <v-card-title>
-      直播画面
-    </v-card-title>
+    <v-container  class="pa-0" fluid>
+      <v-card-title>
+        <v-row>
+          <v-col>直播画面</v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="3">
+            <v-btn class="float-right" @click="reloadPage">重载页面</v-btn>
+          </v-col>
+        </v-row>
+      </v-card-title>
+    </v-container>
+    <v-divider></v-divider>
     <v-card-actions>
       <v-img
           :src="streamSource"
@@ -29,6 +38,11 @@ export default {
   data() {
     return {
       streamSource: urls.defaultDomain + ":8091" + "/0/stream/",
+    }
+  },
+  methods: {
+    reloadPage(){
+      this.$router.go(0); // Reloads page
     }
   }
 }
