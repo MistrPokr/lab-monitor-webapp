@@ -21,5 +21,10 @@ export default new Router({
             name: "videoArchiveView",
             component: () => import("./views/VideoArchive")
         },
+        {
+            path: "/full",
+            name: "liveFullScreenView",
+            component: () => import("./views/LiveFull")
+        }
     ]
 })
