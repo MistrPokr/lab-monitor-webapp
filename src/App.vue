@@ -23,7 +23,7 @@
             <v-list-item-title>主页</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="()=>{this.$router.push('/videos')}">
+          <v-list-item @click="this.linkExternal">
             <v-list-item-icon>
               <v-icon>mdi-video-box</v-icon>
             </v-list-item-icon>
@@ -68,5 +68,10 @@ export default {
     drawer: false,
     drawerGroup: null,
   }),
+  methods: {
+    linkExternal: function () {
+      window.open(window.location.host + '/video/');
+    }
+  }
 };
 </script>
