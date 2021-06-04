@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col>
+      <v-col cols="12" md="4" lg="4">
         <video-list></video-list>
       </v-col>
       <v-spacer></v-spacer>

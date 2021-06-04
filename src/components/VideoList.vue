@@ -18,12 +18,6 @@
           >
             mdi-download
           </v-icon>
-          <v-icon
-              small
-              @click="deleteVideo(item)"
-          >
-            mdi-delete
-          </v-icon>
         </template>
       </v-data-table>
     </v-card-actions>
