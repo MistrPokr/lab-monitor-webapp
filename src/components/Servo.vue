@@ -80,10 +80,9 @@ export default {
     },
     setServoAngle(angle) {
       let postUrl = "api/servo/" + String(angle) + "/";
-      axios.post(postUrl).then((response) => {
-        console.log(response);
+      axios.post(postUrl).then(() => {
+        this.getServoAngle();
       });
-      this.getServoAngle();
     },
     incrementServoAngle(dir) {
       // increment direction (1 or -1)
@@ -108,7 +107,6 @@ export default {
     this.getServoAngle();
     this.timer = setInterval(() => {
       this.getDHTData();
-      this.getServoAngle();
     }, 1000);
   },
 }
