@@ -70,7 +70,7 @@ export default {
   }),
   methods: {
     linkExternal: function () {
-      window.open(window.location.host + '/video/');
+      window.open('/video/');
     }
   }
 };
